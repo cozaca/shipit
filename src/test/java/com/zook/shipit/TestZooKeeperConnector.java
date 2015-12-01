@@ -8,12 +8,12 @@ import org.apache.zookeeper.KeeperException;
 import org.apache.zookeeper.ZooKeeper;
 import org.junit.Test;
 
-public class TestZookeeperConnector {
+public class TestZooKeeperConnector {
 
 	@Test
 	public void shouldConnectToZookeeper() throws IOException, InterruptedException, KeeperException {
 		List<String> znodes = new ArrayList<String>();
-		ZookeeperConnector zooKeeperConnector = new ZookeeperConnector();
+		ZooKeeperConnector zooKeeperConnector = new ZooKeeperConnector();
 		ZooKeeper zooKeeper = zooKeeperConnector.connect("localhost");
 
 		znodes = zooKeeper.getChildren("/", true);
