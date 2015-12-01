@@ -1,4 +1,4 @@
-package com.zook.shipit.client;
+package com.test;
 
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
