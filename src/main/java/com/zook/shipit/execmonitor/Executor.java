@@ -4,20 +4,24 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-
 import org.apache.zookeeper.KeeperException;
 import org.apache.zookeeper.WatchedEvent;
 import org.apache.zookeeper.Watcher;
 import org.apache.zookeeper.ZooKeeper;
+import com.zook.shipit.manager.ZooKeeperManager;
 
 public class Executor
     implements Watcher, Runnable, DataMonitor.DataMonitorListener
 {
     String znode;
+    
+    byte[] data;
 
     DataMonitor dm;
 
     ZooKeeper zk;
+    
+    ZooKeeperManager zooKeeperManager;
 
     String filename;
 
@@ -25,18 +29,21 @@ public class Executor
 
     Process child;
 
-    public Executor(String hostPort, String znode, String filename,
-            String exec[]) throws KeeperException, IOException {
+    public Executor(String hostPort, String znode, String filename, byte[] data,
+            String exec[]) throws KeeperException, IOException, InterruptedException {
         this.filename = filename;
         this.exec = exec;
+        this.data = data;
         zk = new ZooKeeper(hostPort, 3000, this);
         dm = new DataMonitor(zk, znode, null, this);
+        zooKeeperManager = new ZooKeeperManager(zk);
+        zooKeeperManager.overrideZnodeWithFileDate(znode, filename);
         System.out.println("Executor for node = " + znode);
     }
 
-    /**
+/*    *//**
      * @param args
-     */
+     *//*
     public static void main(String[] args) {
         args = new String[]{"localhost", "/stuff", "output.txt", "c:/projects/shipit/distributions/count.cmd"};
         String hostPort = args[0];
@@ -49,7 +56,7 @@ public class Executor
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
     /***************************************************************************
      * We do process any events ourselves, we just need to forward them on.

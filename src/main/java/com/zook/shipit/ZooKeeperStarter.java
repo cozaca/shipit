@@ -7,27 +7,35 @@ public class ZooKeeperStarter
 
     public static final String DEFAULT_HOST    = "localHost";
     public static final int    DEFAULT_TIMEOUT = 5000;
+    private final String znode;
+    private final byte[] data;
+    private final String fileName;
 
-    public static void main(String args[])
+    public ZooKeeperStarter(String znode, String data, String fileName)
     {
-        String[] znodes = {"/ul-confirm.ini", "/zookeeper.ini", "/middle.ini", "/stuff.ini"};
-        for (int i = 0; i < znodes.length; i++)
-        {
-            String[] exec = new String[]{"c:/projects/shipit/distributions/count.cmd"};
-            initExecutors(znodes, i, exec);
-        }
+        this.znode = znode;
+        this.data = data.getBytes();
+        this.fileName = fileName;
     }
-
-    private static void initExecutors(String[] znodes, int i, String[] exec)
+    
+    public ZooKeeperStarter(String znode, byte[] data, String fileName)
     {
-        new Thread(() ->  startExecutorForZnode(znodes[i], znodes[i].replaceFirst("/", ""), exec)).start();
+        this.znode = znode;
+        this.data = data;
+        this.fileName = fileName;
     }
-
-    public static void startExecutorForZnode(String znode, String fileName, String[] exec)
+    
+    public void start()
+    {
+        String[] exec = new String[]{"c:/projects/shipit/distributions/count.cmd"};
+        new Thread(() -> startExecutorForZnode(exec)).start();
+    }
+    
+    private void startExecutorForZnode(String[] exec)
     {
         try
         {
-            new Executor(DEFAULT_HOST, znode, fileName, exec).run();
+            new Executor(DEFAULT_HOST, znode, fileName, data, exec).run();
         }
         catch (Exception e)
         {

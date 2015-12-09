@@ -6,7 +6,6 @@ import org.apache.zookeeper.KeeperException;
 import org.apache.zookeeper.ZooKeeper;
 import org.junit.Before;
 import org.junit.Test;
-import com.zook.shipit.ZooKeeperConnector;
 
 public class TestZooKeeperManager {
 
@@ -46,9 +45,9 @@ public class TestZooKeeperManager {
     @Test
     public void shouldCreateZNodeWithFileData() throws KeeperException, InterruptedException, IOException
     {
-        String path = "/ul-middle.ini";
+        String path = "/ulconfirm.ini";
 
-        zooManager.createZnodeWithFileDate(path, "g:/Platforms/ionut_last_platform/MiddleHEADOds372/servers/ulodisys/conf/extensions/ul-confirm/ul-middle.ini");
+        zooManager.createZnodeWithFileDate(path, "g:/Platforms/ionut_last_platform/MiddleHEADOds372/servers/ulodisys/conf/extensions/ul-confirm/ul-confirm.ini");
         List<String> znodes = zooKeeper.getChildren("/", true);
 
         for (String znode : znodes)
