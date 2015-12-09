@@ -140,8 +140,7 @@ public class Executor
             try {
                 System.out.println("Starting child");
                 child = Runtime.getRuntime().exec(exec);
-                new StreamWriter(child.getInputStream(), System.out);
-                new StreamWriter(child.getErrorStream(), System.err);
+                //TODO Here we should we call the JMX method
             } catch (IOException e) {
                 e.printStackTrace();
             }
