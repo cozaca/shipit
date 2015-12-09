@@ -27,15 +27,14 @@ public class ZooKeeperStarter
     
     public void start()
     {
-        String[] exec = new String[]{"c:/projects/shipit/distributions/count.cmd"};
-        new Thread(() -> startExecutorForZnode(exec)).start();
+        new Thread(() -> startExecutorForZnode()).start();
     }
     
-    private void startExecutorForZnode(String[] exec)
+    private void startExecutorForZnode()
     {
         try
         {
-            new Executor(DEFAULT_HOST, znode, fileName, data, exec).run();
+            new Executor(DEFAULT_HOST, znode, fileName, data).run();
         }
         catch (Exception e)
         {
