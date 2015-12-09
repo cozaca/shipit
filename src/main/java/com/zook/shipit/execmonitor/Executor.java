@@ -30,9 +30,9 @@ public class Executor
         this.data = data;
         zk = new ZooKeeper(hostPort, 5000, this);
         dm = new DataMonitor(zk, znode, null, this);
+        
         zooKeeperManager = new ZooKeeperManager(zk);
-        zooKeeperManager.overrideZnodeWithFileDate(znode, filename);
-        System.out.println("Executor for node = " + znode);
+        zooKeeperManager.manage(znode, filename);
     }
 
     public void process(WatchedEvent event)

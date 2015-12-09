@@ -19,9 +19,17 @@ public class ZooKeeperManager
         this.zooKeeper = zooKeeper;
     }
     
-    public void manage()
+    public void manage(String znode, String file) throws KeeperException, InterruptedException, IOException
     {
-        
+        Stat stat = zooKeeper.exists(znode, false);
+        if(stat != null)
+        {
+            overrideZnodeWithFileDate(znode, file);
+        }
+        else
+        {
+            createZnodeWithFileDate(znode, file);
+        }
     }
 
     public void createZNode(String path, byte[] data) throws KeeperException, InterruptedException

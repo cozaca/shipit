@@ -16,6 +16,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -48,7 +50,9 @@ public class SelectFileChooserExample extends Application
         primaryStage.setTitle(titleTxt);
 
         // Window label
-        Label label = new Label("Select File Choosers");
+        Label label = new Label("Please choose your configuration file");
+    /*    Image image = new Image("/launcher_icon.ico");
+        label.setGraphic(new ImageView(image));*/
         label.setTextFill(Color.DARKBLUE);
         label.setFont(Font.font("Calibri", FontWeight.BOLD, 36));
         HBox labelHb = new HBox();
@@ -64,7 +68,7 @@ public class SelectFileChooserExample extends Application
         scroll.setContent(txtArea);
         scroll.setFitToWidth(true);
         scroll.setFitToHeight(true);
-        scroll.setPrefHeight(250);
+        scroll.setPrefHeight(600);
         scroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         scroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
         
@@ -76,14 +80,14 @@ public class SelectFileChooserExample extends Application
         Button btn1 = new Button("Choose a file...");
         btn1.setOnAction(new SingleFcButtonListener());
         HBox buttonHb1 = new HBox(10);
-        buttonHb1.setAlignment(Pos.BOTTOM_RIGHT);
+        buttonHb1.setAlignment(Pos.CENTER_RIGHT);
         buttonHb1.getChildren().addAll(btn1);
 
         // Button
-        Button btn2 = new Button("Save as file...");
+        Button btn2 = new Button(" Save as file ... ");
         btn2.setOnAction(new SaveButtonListener());
         HBox buttonHb2 = new HBox(10);
-        buttonHb2.setAlignment(Pos.BOTTOM_LEFT);
+        buttonHb2.setAlignment(Pos.CENTER_RIGHT);
         buttonHb2.getChildren().addAll(btn2);
 
         // Status message text
@@ -97,7 +101,7 @@ public class SelectFileChooserExample extends Application
         vbox.getChildren().addAll(labelHb,txtAreaVbox, buttonHb1, buttonHb2, actionStatus);
 
         // Scene
-        Scene scene = new Scene(vbox, 800, 500); // w x h
+        Scene scene = new Scene(vbox, 900, 650); // w x h
         primaryStage.setScene(scene);
         primaryStage.show();
 
