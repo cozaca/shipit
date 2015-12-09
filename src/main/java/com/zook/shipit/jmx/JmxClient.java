@@ -1,4 +1,4 @@
-package com.zook.shipit.execmonitor;
+package com.zook.shipit.jmx;
 
 import com.sun.tools.attach.VirtualMachine;
 import com.sun.tools.attach.VirtualMachineDescriptor;
@@ -9,11 +9,37 @@ import javax.management.ObjectName;
 import javax.management.remote.JMXConnector;
 import javax.management.remote.JMXConnectorFactory;
 import javax.management.remote.JMXServiceURL;
+import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
-public class JmxClient
+public abstract class JmxClient
 {
+    private static final String MANAGEMENT_AGENT_LIB_PATH = Paths.get(System.getenv("JAVA_HOME"), "jre", "lib").toString();
+    private static final String ORDER_MANAGEMENT_SYSTEM   = "com.ullink.oms.OrderManagementSystem";
 
-    public void callJmxMethod()
+    private final String type;
+    private final String objectName;
+    private final String defaultMethod;
+
+    public JmxClient(String type, String objectName, String defaultMethod)
+    {
+        this.type = type;
+        this.objectName = objectName;
+        this.defaultMethod = defaultMethod;
+    }
+
+    public String getType()
+    {
+        return type;
+    }
+
+    public void callMethod()
+    {
+        callMethod(defaultMethod);
+    }
+
+    public void callMethod(String method)
     {
         try
         {
@@ -30,7 +56,8 @@ public class JmxClient
             }
 
             final VirtualMachine virtualMachine = attachProvider.attachVirtualMachine(descriptor);
-            virtualMachine.loadAgent("C:\\Program Files (x86)\\Java\\jre1.8.0_45\\lib\\management-agent.jar", "com.sun.management.jmxremote");
+
+            virtualMachine.loadAgent(MANAGEMENT_AGENT_LIB_PATH + File.separator + "management-agent.jar", "com.sun.management.jmxremote");
             final Object portObject = virtualMachine.getAgentProperties().get("com.sun.management.jmxremote.localConnectorAddress");
 
             final JMXServiceURL target = new JMXServiceURL(portObject + "");
@@ -38,19 +65,19 @@ public class JmxClient
             final JMXConnector connector = JMXConnectorFactory.connect(target);
             final MBeanServerConnection remote = connector.getMBeanServerConnection();
 
-            ObjectName objectName = ObjectName.getInstance("com.ullink.oms.ulconfirm.extension.management:type=PreferenceShync,name=ul-confirm-PreferenceShync");
+            ObjectName object = ObjectName.getInstance(objectName);
 
-            remote.invoke(objectName, "shync", null, null);
+            remote.invoke(object, method, null, null);
         }
         catch (Exception e)
         {
-
+            e.printStackTrace();
         }
     }
 
     private static boolean pickThisOne(VirtualMachineDescriptor virtualMachineDescriptor)
     {
-        return "com.ullink.oms.OrderManagementSystem".equals(virtualMachineDescriptor.displayName());
+        return ORDER_MANAGEMENT_SYSTEM.equals(virtualMachineDescriptor.displayName());
     }
 
 }

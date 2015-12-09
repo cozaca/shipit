@@ -1,5 +1,8 @@
 package com.zook.shipit.execmonitor;
 
+import com.zook.shipit.jmx.ConfirmJmx;
+import com.zook.shipit.jmx.JmxClient;
+import com.zook.shipit.jmx.JmxClientFactory;
 import com.zook.shipit.manager.ZooKeeperManager;
 import org.apache.zookeeper.KeeperException;
 import org.apache.zookeeper.WatchedEvent;
@@ -11,8 +14,6 @@ import java.io.IOException;
 public class Executor
     implements Watcher, Runnable, DataMonitor.DataMonitorListener
 {
-    String znode;
-
     byte[] data;
 
     DataMonitor dm;
@@ -22,8 +23,6 @@ public class Executor
     ZooKeeperManager zooKeeperManager;
 
     String filename;
-
-    JmxClient jmxClient = new JmxClient();
 
     public Executor(String hostPort, String znode, String filename, byte[] data) throws KeeperException, IOException, InterruptedException
     {
@@ -39,6 +38,8 @@ public class Executor
     public void process(WatchedEvent event)
     {
         dm.process(event);
+
+        System.out.println("================= process WatchedEvent");
     }
 
     public void run()
@@ -71,8 +72,8 @@ public class Executor
     @Override
     public void exists(byte[] data)
     {
+        System.out.println("================= call jmx command");
 
-        System.out.println("================= call count.cmd");
-        jmxClient.callJmxMethod();
+        JmxClientFactory.get(ConfirmJmx.TYPE).callMethod();
     }
 }
