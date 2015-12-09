@@ -5,8 +5,8 @@ public class ConfirmJmx extends JmxClient
 
     public static final  String TYPE        = "confirm-jmx";
 
-    private static final String OBJECT_NAME = "com.ullink.oms.ulconfirm.extension.management:type=PreferenceShync,name=ul-confirm-PreferenceShync";
-    private static final String DEFAULT_METHOD = "shync";
+    private static final String OBJECT_NAME = "com.ullink.oms.ulconfirm.extension.management:type=PreferenceSync,name=ul-confirm-PreferenceSync";
+    private static final String DEFAULT_METHOD = "sync";
 
     public ConfirmJmx()
     {
